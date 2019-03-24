@@ -14,13 +14,10 @@ import java.util.List;
 
 public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecyclerAdapter.ViewHolder> {
     private Context context;
-    private List<Result> resultList;
+    private List<String> resultList;
     private final LayoutInflater layoutInflater;
-    private int optionIndex;
-    private String TAG = "LOGLOGLOG";
-    private List<String> choices = new ArrayList<>();
 
-    public OptionsRecyclerAdapter(Context context, List<Result> resultList){
+    public OptionsRecyclerAdapter(Context context, List<String> resultList){
         this.context = context;
         this.resultList = resultList;
         layoutInflater = LayoutInflater.from(context);
@@ -35,22 +32,7 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        List<String> incorrectAnswers = resultList.get(position).getIncorrectAnswers();
-        String correctAnswer = resultList.get(position).getCorrectAnswer();
-        List<String> options = new ArrayList<>();
-        options.add(correctAnswer);
-        for(String s: incorrectAnswers){
-            options.add(s);
-        }
-
-        resultList.get(position).setAllOptions(options);
-        choices = resultList.get(position).getAllOptions();
-
-
-            Log.d(TAG, choices.get(position));
-
-            holder.optionText.setText(choices.get(position));
-
+            holder.optionText.setText(resultList.get(position));
     }
 
     @Override
@@ -58,7 +40,7 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
         return resultList.size();
     }
 
-    public void updateOptions(List<Result> result){
+    public void updateOptions(List<String> result){
         resultList = result;
         notifyDataSetChanged();
     }

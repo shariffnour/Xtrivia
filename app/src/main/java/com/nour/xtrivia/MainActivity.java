@@ -12,6 +12,7 @@ import com.nour.xtrivia.services.ServiceBuilder;
 
 import org.jsoup.Jsoup;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,6 +25,9 @@ public class MainActivity extends AppCompatActivity {
     private OptionsRecyclerAdapter optionsRecyclerAdapter;
     private RecyclerView recyclerOptions;
     private LinearLayoutManager layoutManager;
+    private List<Result> data;
+    private List<String> incorrectAnswers;
+    private String correctAnswer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +45,22 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Questions>() {
             @Override
             public void onResponse(Call<Questions> call, Response<Questions> response) {
-                List<Result> data = response.body().getResults();
+                data = response.body().getResults();
+                incorrectAnswers = data.get(0).getIncorrectAnswers();
+                correctAnswer = data.get(0).getCorrectAnswer();
+                List<String> options = new ArrayList<>();
+                options.add(correctAnswer);
+
+                for(String s: incorrectAnswers){
+                    options.add(s);
+                }
+
+                data.get(0).setAllOptions(options);
+                List<String> choices = data.get(0).getAllOptions();
                 Log.d(TAG, data.get(0).getQuestion());
                 questionText.setText(Jsoup.parse(data.get(0).getQuestion()).text());
-                optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, data);
+                optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices);
                 recyclerOptions.setAdapter(optionsRecyclerAdapter);
-                optionsRecyclerAdapter.updateOptions(data);
             }
 
             @Override
