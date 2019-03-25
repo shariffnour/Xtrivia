@@ -59,7 +59,8 @@ public class MainActivity extends AppCompatActivity {
                 List<String> choices = data.get(0).getAllOptions();
                 Log.d(TAG, data.get(0).getQuestion());
                 questionText.setText(Jsoup.parse(data.get(0).getQuestion()).text());
-                optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices);
+                optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data);
+                optionsRecyclerAdapter.notifyDataSetChanged();
                 recyclerOptions.setAdapter(optionsRecyclerAdapter);
             }
 
