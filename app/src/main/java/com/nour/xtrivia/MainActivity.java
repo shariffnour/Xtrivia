@@ -13,6 +13,7 @@ import com.nour.xtrivia.services.ServiceBuilder;
 import org.jsoup.Jsoup;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
 
                 data.get(0).setAllOptions(options);
                 List<String> choices = data.get(0).getAllOptions();
+                Collections.shuffle(choices);
                 Log.d(TAG, data.get(0).getQuestion());
                 questionText.setText(Jsoup.parse(data.get(0).getQuestion()).text());
                 optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data);
