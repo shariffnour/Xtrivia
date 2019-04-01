@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private List<Result> data;
     private List<String> incorrectAnswers;
     private String correctAnswer;
+    private int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,23 +48,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Questions> call, Response<Questions> response) {
                 data = response.body().getResults();
-                incorrectAnswers = data.get(0).getIncorrectAnswers();
-                correctAnswer = data.get(0).getCorrectAnswer();
-                List<String> options = new ArrayList<>();
-                options.add(correctAnswer);
-
-                for(String s: incorrectAnswers){
-                    options.add(s);
-                }
-
-                data.get(0).setAllOptions(options);
-                List<String> choices = data.get(0).getAllOptions();
-                Collections.shuffle(choices);
-                Log.d(TAG, data.get(0).getQuestion());
-                questionText.setText(Jsoup.parse(data.get(0).getQuestion()).text());
-                optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data);
-                optionsRecyclerAdapter.notifyDataSetChanged();
-                recyclerOptions.setAdapter(optionsRecyclerAdapter);
+                populateViews();
             }
 
             @Override
@@ -71,5 +56,34 @@ public class MainActivity extends AppCompatActivity {
                 questionText.setText("Akwai Matsala");
             }
         });
+
+
+
+    }
+
+    public void populateViews(){
+        List<String> choices = processResponse(position);
+        optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data, position);
+        recyclerOptions.setAdapter(optionsRecyclerAdapter);
+
+        optionsRecyclerAdapter.updateOptions(choices, position);
+        position++;
+    }
+
+    public List<String> processResponse(int position){
+        incorrectAnswers = data.get(position).getIncorrectAnswers();
+        correctAnswer = data.get(position).getCorrectAnswer();
+        List<String> options = new ArrayList<>();
+        options.add(correctAnswer);
+
+        for(String s: incorrectAnswers){
+            options.add(s);
+        }
+
+        data.get(position).setAllOptions(options);
+        List<String> choices = data.get(position).getAllOptions();
+        Collections.shuffle(choices);
+        questionText.setText(Jsoup.parse(data.get(position).getQuestion()).text());
+        return choices;
     }
 }

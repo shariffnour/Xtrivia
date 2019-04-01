@@ -22,11 +22,13 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
     private String correctAnswer;
     private final LayoutInflater layoutInflater;
     private boolean selectionIsLocked;
+    private int position;
 
-    public OptionsRecyclerAdapter(Context context, List<String> optionList, List<Result> resultList){
+    public OptionsRecyclerAdapter(Context context, List<String> optionList, List<Result> resultList, int position){
         this.context = context;
         this.optionList = optionList;
-        this.correctAnswer = resultList.get(0).getCorrectAnswer();
+        this.position = position;
+        this.correctAnswer = resultList.get(position).getCorrectAnswer();
         layoutInflater = LayoutInflater.from(context);
         selectionIsLocked = false;
     }
@@ -48,8 +50,9 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
         return optionList.size();
     }
 
-    public void updateOptions(List<String> result){
+    public void updateOptions(List<String> result, int newPosition){
         optionList = result;
+        position = newPosition;
         notifyDataSetChanged();
     }
 
@@ -61,10 +64,10 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
 
         public ViewHolder(View itemView){
             super(itemView);
-            optionText = (TextView) itemView.findViewById(R.id.option);
-            imgCorrect = (ImageView) itemView.findViewById(R.id.imgCorrect);
-            imgWrong = (ImageView) itemView.findViewById(R.id.imgWrong);
-            optionCard = (CardView) itemView.findViewById(R.id.optionCard);
+            optionText = itemView.findViewById(R.id.option);
+            imgCorrect = itemView.findViewById(R.id.imgCorrect);
+            imgWrong = itemView.findViewById(R.id.imgWrong);
+            optionCard = itemView.findViewById(R.id.optionCard);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -81,7 +84,16 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
                         selectionIsLocked = true;
                     }
                 }
+
             });
+        }
+    }
+
+    private void sleepThread() {
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
