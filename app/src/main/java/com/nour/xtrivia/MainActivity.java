@@ -1,10 +1,16 @@
 package com.nour.xtrivia;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nour.xtrivia.services.ApiService;
@@ -20,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OptionsRecyclerAdapter.OnOptionClickListener {
     private static final String TAG = "DEBUG:";
     TextView questionText;
     private OptionsRecyclerAdapter optionsRecyclerAdapter;
@@ -30,20 +36,30 @@ public class MainActivity extends AppCompatActivity {
     private List<String> incorrectAnswers;
     private String correctAnswer;
     private int position = 0;
+    private Call<Questions> call;
+    private ApiService taskService;
+    private boolean selectionIsLocked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        selectionIsLocked = false;
+
         questionText = findViewById(R.id.questionText);
         recyclerOptions = findViewById(R.id.optionsRecycler);
         layoutManager = new LinearLayoutManager(this);
         recyclerOptions.setLayoutManager(layoutManager);
 
-        ApiService taskService = ServiceBuilder.buildService(ApiService.class);
-        Call<Questions> call = taskService.getQuestions();
+        makeApiCall();
 
+
+    }
+
+    public void makeApiCall() {
+        taskService = ServiceBuilder.buildService(ApiService.class);
+        call = taskService.getQuestions();
         call.enqueue(new Callback<Questions>() {
             @Override
             public void onResponse(Call<Questions> call, Response<Questions> response) {
@@ -56,14 +72,11 @@ public class MainActivity extends AppCompatActivity {
                 questionText.setText("Akwai Matsala");
             }
         });
-
-
-
     }
 
     public void populateViews(){
         List<String> choices = processResponse(position);
-        optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data, position);
+        optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data, position, this);
         recyclerOptions.setAdapter(optionsRecyclerAdapter);
 
         optionsRecyclerAdapter.updateOptions(choices, position);
@@ -85,5 +98,22 @@ public class MainActivity extends AppCompatActivity {
         Collections.shuffle(choices);
         questionText.setText(Jsoup.parse(data.get(position).getQuestion()).text());
         return choices;
+    }
+
+    @Override
+    public void onOptionClicked(int position) {
+        OptionsRecyclerAdapter.ViewHolder viewHolder = (OptionsRecyclerAdapter.ViewHolder) recyclerOptions.findViewHolderForAdapterPosition(position);
+        String answer = viewHolder.optionText.getText().toString();
+        if(!selectionIsLocked){
+            if(answer.equals(correctAnswer)){
+                viewHolder.imgCorrect.setVisibility(View.VISIBLE);
+                viewHolder.optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+            }else{
+                viewHolder.imgWrong.setVisibility(View.VISIBLE);
+                viewHolder.optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+            }
+            selectionIsLocked = true;
+            populateViews();
+        }
     }
 }

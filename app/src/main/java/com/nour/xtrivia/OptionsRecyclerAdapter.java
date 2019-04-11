@@ -21,23 +21,24 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
     private List<String> optionList;
     private String correctAnswer;
     private final LayoutInflater layoutInflater;
-    private boolean selectionIsLocked;
     private int position;
+    private OnOptionClickListener optionClickListener;
 
-    public OptionsRecyclerAdapter(Context context, List<String> optionList, List<Result> resultList, int position){
+
+    public OptionsRecyclerAdapter(Context context, List<String> optionList, List<Result> resultList, int position, OnOptionClickListener optionClickListener){
         this.context = context;
         this.optionList = optionList;
         this.position = position;
+        this.optionClickListener = optionClickListener;
         this.correctAnswer = resultList.get(position).getCorrectAnswer();
         layoutInflater = LayoutInflater.from(context);
-        selectionIsLocked = false;
     }
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = layoutInflater.inflate(R.layout.option_item, parent, false);
-        return new ViewHolder(itemView);
+        return new ViewHolder(itemView, optionClickListener);
     }
 
     @Override
@@ -61,28 +62,19 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
         ImageView imgCorrect;
         ImageView imgWrong;
         CardView optionCard;
+        OnOptionClickListener optionClickListener;
 
-        public ViewHolder(View itemView){
+        public ViewHolder(View itemView, final OnOptionClickListener optionClickListener){
             super(itemView);
             optionText = itemView.findViewById(R.id.option);
             imgCorrect = itemView.findViewById(R.id.imgCorrect);
             imgWrong = itemView.findViewById(R.id.imgWrong);
             optionCard = itemView.findViewById(R.id.optionCard);
-
+            this.optionClickListener = optionClickListener;
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    String answer = optionText.getText().toString();
-                    if(!selectionIsLocked){
-                        if(answer.equals(correctAnswer)){
-                            imgCorrect.setVisibility(View.VISIBLE);
-                            optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
-                        }else{
-                            imgWrong.setVisibility(View.VISIBLE);
-                            optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
-                        }
-                        selectionIsLocked = true;
-                    }
+                    optionClickListener.onOptionClicked(getAdapterPosition());
                 }
 
             });
@@ -95,5 +87,9 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    public interface OnOptionClickListener{
+        void onOptionClicked(int position);
     }
 }
