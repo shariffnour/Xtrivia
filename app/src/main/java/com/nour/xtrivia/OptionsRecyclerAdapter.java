@@ -81,13 +81,6 @@ public class OptionsRecyclerAdapter extends RecyclerView.Adapter<OptionsRecycler
         }
     }
 
-    private void sleepThread() {
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
 
     public interface OnOptionClickListener{
         void onOptionClicked(int position);

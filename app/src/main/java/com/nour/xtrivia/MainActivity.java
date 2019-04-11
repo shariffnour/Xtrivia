@@ -2,6 +2,7 @@ package com.nour.xtrivia;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     private Call<Questions> call;
     private ApiService taskService;
     private boolean selectionIsLocked;
+    private OptionsRecyclerAdapter.ViewHolder viewHolder;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,8 +81,6 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
         List<String> choices = processResponse(position);
         optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data, position, this);
         recyclerOptions.setAdapter(optionsRecyclerAdapter);
-
-        optionsRecyclerAdapter.updateOptions(choices, position);
         position++;
     }
 
@@ -100,9 +101,34 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
         return choices;
     }
 
+    public void updateViews(){
+        if(position < data.size()){
+            List<String> choices = processResponse(position);
+            viewHolder.imgCorrect.setVisibility(View.GONE);
+            viewHolder.imgWrong.setVisibility(View.GONE);
+            String bgColor = "#d6d7d7";
+            viewHolder.optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(bgColor)));
+            optionsRecyclerAdapter.updateOptions(choices, position);
+            position++;
+        } else if(position >= data.size()){
+            questionText.setText("Game Finished");
+        }
+    }
+
+    public void makeDelay(){
+        handler.postDelayed(runnable, 1000);
+    }
+
+    private Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            updateViews();
+        }
+    };
+
     @Override
     public void onOptionClicked(int position) {
-        OptionsRecyclerAdapter.ViewHolder viewHolder = (OptionsRecyclerAdapter.ViewHolder) recyclerOptions.findViewHolderForAdapterPosition(position);
+        viewHolder = (OptionsRecyclerAdapter.ViewHolder) recyclerOptions.findViewHolderForAdapterPosition(position);
         String answer = viewHolder.optionText.getText().toString();
         if(!selectionIsLocked){
             if(answer.equals(correctAnswer)){
@@ -113,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
                 viewHolder.optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
             }
             selectionIsLocked = true;
-            populateViews();
         }
+        makeDelay();
     }
 }
