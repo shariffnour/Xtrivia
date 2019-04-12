@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
             String bgColor = "#d6d7d7";
             viewHolder.optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(bgColor)));
             optionsRecyclerAdapter.updateOptions(choices, position);
+            selectionIsLocked = false;
             position++;
         } else if(position >= data.size()){
             questionText.setText("Game Finished");
