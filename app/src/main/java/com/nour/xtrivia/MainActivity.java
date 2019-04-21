@@ -1,5 +1,9 @@
 package com.nour.xtrivia;
 
+import android.animation.ArgbEvaluator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.app.Dialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
@@ -11,6 +15,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,6 +48,10 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     private boolean selectionIsLocked;
     private OptionsRecyclerAdapter.ViewHolder viewHolder;
     private Handler handler = new Handler();
+    TextView scoreView;
+    private int score = 0;
+    private TextView finalScore;
+    private Dialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,10 +60,16 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
 
         selectionIsLocked = false;
 
+        scoreView = findViewById(R.id.score);
         questionText = findViewById(R.id.questionText);
         recyclerOptions = findViewById(R.id.optionsRecycler);
         layoutManager = new LinearLayoutManager(this);
         recyclerOptions.setLayoutManager(layoutManager);
+
+        dialog = new Dialog(MainActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.dialog_layout);
+        finalScore = findViewById(R.id.finalScore);
 
         makeApiCall();
 
@@ -112,12 +128,37 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
             selectionIsLocked = false;
             position++;
         } else if(position >= data.size()){
-            questionText.setText("Game Finished");
+            showDialog();
         }
+    }
+
+    public void showDialog() {
+        finalScore.setText(Integer.toString(score));
+        dialog.show();
     }
 
     public void makeDelay(){
         handler.postDelayed(runnable, 1000);
+    }
+
+    public void addPoints(){
+        score = score + 5;
+        scoreView.setText(Integer.toString(score));
+    }
+
+    public void minusPoints(){
+        score = score - 2;
+        scoreView.setText(Integer.toString(score));
+    }
+
+    public void blinkOption(){
+        ObjectAnimator anim = ObjectAnimator.ofInt(viewHolder.optionCard, "backgroundColor",
+                Color.WHITE, Color.GREEN, Color.WHITE);
+        anim.setDuration(1000);
+        anim.setEvaluator(new ArgbEvaluator());
+        anim.setRepeatMode(ValueAnimator.REVERSE);
+        anim.setRepeatCount(Animation.INFINITE);
+        anim.start();
     }
 
     private Runnable runnable = new Runnable() {
@@ -135,9 +176,12 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
             if(answer.equals(correctAnswer)){
                 viewHolder.imgCorrect.setVisibility(View.VISIBLE);
                 viewHolder.optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.GREEN));
+                addPoints();
             }else{
                 viewHolder.imgWrong.setVisibility(View.VISIBLE);
                 viewHolder.optionCard.setBackgroundTintList(ColorStateList.valueOf(Color.RED));
+                if(score >= 2)
+                minusPoints();
             }
             selectionIsLocked = true;
         }
