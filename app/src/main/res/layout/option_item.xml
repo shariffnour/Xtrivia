@@ -1,22 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
         android:id="@+id/optionCard"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:backgroundTint="?attr/colorButtonNormal"
         android:textAlignment="center"
+        app:cardBackgroundColor="@color/colorGreen1"
         app:cardCornerRadius="20dp"
-        app:cardElevation="2dp"
-        tools:layout_editor_absoluteX="25dp"
-        tools:layout_editor_absoluteY="8dp">
+        app:cardElevation="2dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -29,7 +26,11 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
+                android:padding="5dp"
                 android:gravity="center"
+
+                android:textStyle="bold"
+                android:textSize="15sp"
                 android:textAlignment="center"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +47,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginTop="8dp"
+                android:padding="5dp"
                 android:src="@drawable/ic_done_black_24dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -61,6 +63,7 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="8dp"
+                android:padding="5dp"
                 android:src="@drawable/ic_clear_black_24dp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -72,4 +75,4 @@
     </android.support.v7.widget.CardView>
 
 
-</FrameLayout>
+</LinearLayout>
