@@ -19,6 +19,7 @@ public class GameOverDialog extends AppCompatDialogFragment {
     public TextView finalScore;
     private ImageView backButton;
     private Button playButton;
+    public TextView highScore;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -29,25 +30,30 @@ public class GameOverDialog extends AppCompatDialogFragment {
         finalScore = view.findViewById(R.id.finalScore);
         backButton = view.findViewById(R.id.backbtn);
         playButton = view.findViewById(R.id.playAgain);
+        highScore = view.findViewById(R.id.highScore);
         setCancelable(false);
 
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getContext(), MainActivity.class));
+                Intent intent = new Intent(getContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dismiss();
+                Intent intent = new Intent(getContext(), HomeActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
             }
         });
 
         Bundle scores = getArguments();
         finalScore.setText(Integer.toString(scores.getInt("score")));
-
+        highScore.setText(Integer.toString(scores.getInt("highScore")));
 
         dialog.setContentView(view);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(0));

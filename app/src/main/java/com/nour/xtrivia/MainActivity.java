@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Handler;
@@ -53,6 +54,9 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     TextView scoreView;
     TextView questionCount;
     private int score = 0;
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String HIGH_SCORE = "highScore";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
                 OptionsRecyclerAdapter.ViewHolder v = (OptionsRecyclerAdapter.ViewHolder) recyclerOptions.findViewHolderForAdapterPosition(i);
                 v.imgCorrect.setVisibility(View.GONE);
                 v.imgWrong.setVisibility(View.GONE);
-                v.optionCard.setCardBackgroundColor(getResources().getColor(R.color.colorGreen1));
+                v.optionCard.setCardBackgroundColor(getResources().getColor(R.color.colorWhite));
             }
             List<String> choices = processResponse(position);
             optionsRecyclerAdapter.updateOptions(choices, position);
@@ -139,9 +143,24 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
         }
     }
 
+    public int getHighScore(){
+        SharedPreferences sharedPrefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        return sharedPrefs.getInt(HIGH_SCORE, 0);
+    }
+
     public void showDialog() {
         Bundle scores = new Bundle();
+
+        if(score > getHighScore()){
+            SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(HIGH_SCORE, score);
+            editor.apply();
+        }
+
+
         scores.putInt("score", score);
+        scores.putInt("highScore", getHighScore());
 
         GameOverDialog dialog = new GameOverDialog();
         dialog.setArguments(scores);
@@ -163,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     }
 
     public void blinkOption() {
-        ObjectAnimator anim = ObjectAnimator.ofInt(viewHolder.optionCard, "backgroundColor",
+        ObjectAnimator anim = ObjectAnimator.ofInt(viewHolder.optionCard, "cardBackgroundColor",
                 Color.WHITE, Color.GREEN, Color.WHITE);
         anim.setDuration(1000);
         anim.setEvaluator(new ArgbEvaluator());

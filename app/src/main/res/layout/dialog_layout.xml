@@ -1,31 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:gravity="center"
     android:layout_marginLeft="5dp"
     android:layout_marginRight="5dp"
-    android:background="#00ffffff">
-    
+    android:background="#00ffffff"
+    android:gravity="center">
+
     <ImageView
         android:id="@+id/backbtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_clear_black_24dp"
-        android:layout_marginTop="7dp"
-        android:layout_marginRight="7dp"
         android:layout_alignParentRight="true"
-        android:elevation="5dp"/>
+        android:layout_marginRight="7dp"
+        android:layout_marginTop="7dp"
+        android:elevation="20dp"
+        android:src="@drawable/ic_clear_black_24dp" />
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="15dp"
+        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        app:cardBackgroundColor="@color/colorGreenLight">
+        app:cardBackgroundColor="@color/colorWhite"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="15dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,59 +36,97 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="25dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Game Over!"
-                android:textSize="25sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:textAlignment="center" />
-                
-             <ImageView
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginLeft="20dp"
-                 android:layout_marginRight="20dp"
-                 android:layout_marginBottom="10dp"
-                 android:src="@drawable/ic_stars_black_24dp"/>
-
-              <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Your Score"
-                android:textSize="20sp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
-                android:textAlignment="center"/>
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/finalScore"
-                    android:textSize="35sp"
-                    android:textStyle="bold"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
-                    android:layout_marginBottom="10dp"
-                    android:textAlignment="center" />
+                    android:text="Game Over!"
+                    android:textAlignment="center"
+                    android:textSize="25sp"
+                    android:textColor="@color/colorPurple"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:src="@drawable/ic_stars_black_24dp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:text="Your Score"
+                        android:textColor="@color/colorPurple"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/finalScore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:textSize="32sp"
+                        android:textColor="@color/colorPurple"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
 
 
-              <Button
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/playAgain"
-                android:text="Play Again"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/button_green_round"
-                android:layout_marginTop="20dp"
-                android:layout_gravity="center_horizontal"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:text="High Score"
+                        android:textColor="@color/colorPurple"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/highScore"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:textSize="32sp"
+                        android:textColor="@color/colorPurple"
+                        android:textStyle="bold" />
+
+                </LinearLayout>
+
+
+                <Button
+                    android:id="@+id/playAgain"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_round"
+                    android:text="Play Again"
+                    android:textColor="@color/colorWhite" />
 
             </LinearLayout>
 
