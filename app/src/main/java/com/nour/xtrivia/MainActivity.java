@@ -4,6 +4,7 @@ import android.animation.ArgbEvaluator;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -31,6 +32,7 @@ import org.jsoup.Jsoup;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -56,7 +58,9 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     private int score = 0;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String HIGH_SCORE = "highScore";
-
+    private String categoryName;
+    private Map<String, Integer> categoryNames;
+    private int categoryNumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,15 +76,28 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
         layoutManager = new LinearLayoutManager(this);
         recyclerOptions.setLayoutManager(layoutManager);
 
-
+        getCategoryNumber();
         makeApiCall();
 
 
     }
 
+    private int getCategoryNumber() {
+        Intent intent = getIntent();
+        categoryName = intent.getStringExtra("Category");
+
+        categoryNames = Categories.getCategories();
+        for(Map.Entry<String, Integer> entry: categoryNames.entrySet()){
+            if(entry.getKey().equals(categoryName)){
+                categoryNumber = entry.getValue();
+            }
+        }
+        return categoryNumber;
+    }
+
     public void makeApiCall() {
         taskService = ServiceBuilder.buildService(ApiService.class);
-        call = taskService.getQuestions();
+        call = taskService.getQuestions(10, getCategoryNumber(), "multiple");
         call.enqueue(new Callback<Questions>() {
             @Override
             public void onResponse(Call<Questions> call, Response<Questions> response) {
@@ -172,13 +189,29 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     }
 
     public void addPoints() {
+        ValueAnimator animator = ValueAnimator.ofInt(score, score+5);
+        animator.setDuration(300);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                scoreView.setText(animation.getAnimatedValue().toString());
+            }
+        });
+        animator.start();
         score = score + 5;
-        scoreView.setText(Integer.toString(score));
     }
 
     public void minusPoints() {
+        ValueAnimator animator = ValueAnimator.ofInt(score, score-2);
+        animator.setDuration(300);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                scoreView.setText(animation.getAnimatedValue().toString());
+            }
+        });
+        animator.start();
         score = score - 2;
-        scoreView.setText(Integer.toString(score));
     }
 
     public void blinkOption() {
