@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -214,14 +215,9 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
         score = score - 2;
     }
 
-    public void blinkOption() {
-        ObjectAnimator anim = ObjectAnimator.ofInt(viewHolder.optionCard, "cardBackgroundColor",
-                Color.WHITE, Color.GREEN, Color.WHITE);
-        anim.setDuration(1000);
-        anim.setEvaluator(new ArgbEvaluator());
-        anim.setRepeatMode(ValueAnimator.REVERSE);
-        anim.setRepeatCount(Animation.INFINITE);
-        anim.start();
+    public void blinkOption(View view) {
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.option_fade);
+        view.startAnimation(anim);
     }
 
     private Runnable runnable = new Runnable() {
@@ -240,6 +236,8 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
             if (answer.equals(correctAnswer)) {
                 viewHolder.imgCorrect.setVisibility(View.VISIBLE);
                 viewHolder.optionCard.setCardBackgroundColor(Color.GREEN);
+                View view = viewHolder.optionCard;
+                blinkOption(view);
                 addPoints();
             } else {
                 viewHolder.imgWrong.setVisibility(View.VISIBLE);
@@ -258,6 +256,8 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
             OptionsRecyclerAdapter.ViewHolder v = (OptionsRecyclerAdapter.ViewHolder) recyclerOptions.findViewHolderForAdapterPosition(i);
             if (v.optionText.getText().toString().equals(correctAnswer)) {
                 v.optionCard.setCardBackgroundColor(Color.GREEN);
+                View view = v.optionCard;
+                blinkOption(view);
             }
         }
     }

@@ -11,6 +11,8 @@ import android.support.v7.app.AppCompatDialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,10 +22,12 @@ public class GameOverDialog extends AppCompatDialogFragment {
     private ImageView backButton;
     private Button playButton;
     public TextView highScore;
+    private Animation bounce;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = new Dialog(getActivity());
+        dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.dialog_layout, null);
@@ -31,6 +35,10 @@ public class GameOverDialog extends AppCompatDialogFragment {
         backButton = view.findViewById(R.id.backbtn);
         playButton = view.findViewById(R.id.playAgain);
         highScore = view.findViewById(R.id.highScore);
+
+        bounce = AnimationUtils.loadAnimation(getContext(), R.anim.bounce);
+        playButton.startAnimation(bounce);
+
         setCancelable(false);
 
         playButton.setOnClickListener(new View.OnClickListener() {
