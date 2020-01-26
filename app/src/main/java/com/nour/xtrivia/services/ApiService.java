@@ -13,5 +13,4 @@ public interface ApiService {
     Call<Questions> getQuestions(@Query("amount") int amount,
                                  @Query("category") int category,
                                  @Query("type") String type);
-
 }

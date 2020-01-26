@@ -1,10 +1,13 @@
 package com.nour.xtrivia;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Result {
+public class Result implements Parcelable {
 
     @SerializedName("category")
     @Expose
@@ -24,6 +27,28 @@ public class Result {
     @SerializedName("incorrect_answers")
     @Expose
     private List<String> incorrectAnswers = null;
+
+    protected Result(Parcel in) {
+        category = in.readString();
+        type = in.readString();
+        difficulty = in.readString();
+        question = in.readString();
+        correctAnswer = in.readString();
+        incorrectAnswers = in.createStringArrayList();
+        allOptions = in.createStringArrayList();
+    }
+
+    public static final Creator<Result> CREATOR = new Creator<Result>() {
+        @Override
+        public Result createFromParcel(Parcel in) {
+            return new Result(in);
+        }
+
+        @Override
+        public Result[] newArray(int size) {
+            return new Result[size];
+        }
+    };
 
     public List<String> getAllOptions() {
         return allOptions;
@@ -110,5 +135,20 @@ public class Result {
         this.incorrectAnswers = incorrectAnswers;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(category);
+        dest.writeString(type);
+        dest.writeString(difficulty);
+        dest.writeString(question);
+        dest.writeString(correctAnswer);
+        dest.writeStringList(incorrectAnswers);
+        dest.writeStringList(allOptions);
+    }
 }
 

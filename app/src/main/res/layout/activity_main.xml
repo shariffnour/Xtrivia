@@ -7,19 +7,51 @@
     android:background="@drawable/background_hdpi"
     tools:context=".MainActivity">
 
-
     <TextView
-        android:id="@+id/questioncount"
+        android:id="@+id/category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="20dp"
-        android:text="0"
-        android:textStyle="bold"
+        android:layout_marginTop="8dp"
+        android:text="Music"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/scoreLayout"
+        app:layout_constraintStart_toEndOf="@id/questionLayout"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/questionLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/layout_background"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/questionIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_help_24dp" />
+
+        <TextView
+            android:id="@+id/questioncount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="2"
+            android:text="0"
+            android:textColor="@color/colorPurple"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/questiontext"
@@ -30,20 +62,41 @@
         android:textColor="@color/colorWhite"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/questioncount" />
+        app:layout_constraintTop_toBottomOf="@id/questionLayout" />
 
-    <TextView
-        android:id="@+id/score"
+    <LinearLayout
+        android:id="@+id/scoreLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="20dp"
-        android:text="0"
-        android:textStyle="bold"
-        android:textColor="@color/colorWhite"
-        android:textSize="20sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="2dp"
+        android:background="@drawable/layout_background"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:weightSum="3"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/scoresIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/ic_stars_black_24dp" />
+
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:layout_weight="2"
+            android:text="0"
+            android:textColor="@color/colorPurple"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/scoretext"
@@ -54,7 +107,7 @@
         android:textColor="@color/colorWhite"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/score" />
+        app:layout_constraintTop_toBottomOf="@id/scoreLayout" />
 
 
     <android.support.v7.widget.CardView

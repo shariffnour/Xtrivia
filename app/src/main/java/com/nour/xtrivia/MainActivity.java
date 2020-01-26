@@ -41,7 +41,6 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity implements OptionsRecyclerAdapter.OnOptionClickListener {
     private static final String TAG = "DEBUG:";
-    TextView questionText;
     private OptionsRecyclerAdapter optionsRecyclerAdapter;
     private RecyclerView recyclerOptions;
     private LinearLayoutManager layoutManager;
@@ -54,8 +53,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     private boolean selectionIsLocked;
     private OptionsRecyclerAdapter.ViewHolder viewHolder;
     private Handler handler = new Handler();
-    TextView scoreView;
-    TextView questionCount;
+    TextView scoreView, questionText, questionCount, category;
     private int score = 0;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String HIGH_SCORE = "highScore";
@@ -72,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
 
         scoreView = findViewById(R.id.score);
         questionCount = findViewById(R.id.questioncount);
+        category = findViewById(R.id.category);
         questionText = findViewById(R.id.questionText);
         recyclerOptions = findViewById(R.id.optionsRecycler);
         layoutManager = new LinearLayoutManager(this);
@@ -86,6 +85,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     private int getCategoryNumber() {
         Intent intent = getIntent();
         categoryName = intent.getStringExtra("Category");
+        category.setText(categoryName);
 
         categoryNames = Categories.getCategories();
         for(Map.Entry<String, Integer> entry: categoryNames.entrySet()){
