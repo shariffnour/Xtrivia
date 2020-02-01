@@ -35,6 +35,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import io.realm.Realm;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     private String categoryName;
     private Map<String, Integer> categoryNames;
     private int categoryNumber;
+    private Realm realm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
         recyclerOptions = findViewById(R.id.optionsRecycler);
         layoutManager = new LinearLayoutManager(this);
         recyclerOptions.setLayoutManager(layoutManager);
+
+        realm = Realm.getDefaultInstance();
 
         getCategoryNumber();
         makeApiCall();
@@ -169,6 +173,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     public void showDialog() {
         Bundle scores = new Bundle();
 
+
         if(score > getHighScore()){
             SharedPreferences prefs = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
@@ -176,13 +181,39 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
             editor.apply();
         }
 
-
+        saveScoresToRealm(categoryName, "Easy", score);
         scores.putInt("score", score);
         scores.putInt("highScore", getHighScore());
 
         GameOverDialog dialog = new GameOverDialog();
         dialog.setArguments(scores);
         dialog.show(getSupportFragmentManager(), "GameOver Dialog");
+    }
+
+    //Inserts Scores to the Realm database
+    private void saveScoresToRealm(final String category, final String difficulty, final int points) {
+        realm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                Number maxId = realm.where(Scores.class).max("id");
+                int newId = (maxId == null) ? 1 : maxId.intValue()+1;
+                Scores score = realm.createObject(Scores.class, newId);
+
+                score.setCategory(category);
+                score.setDifficulty(difficulty);
+                score.setPoints(points);
+            }
+        }, new Realm.Transaction.OnSuccess() {
+            @Override
+            public void onSuccess() {
+               // Toast.makeText(MainActivity.this, "Value Stored Successfully", Toast.LENGTH_LONG).show();
+            }
+        }, new Realm.Transaction.OnError() {
+            @Override
+            public void onError(Throwable error) {
+                // Transaction failed and was automatically canceled.
+               // Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+            }});
     }
 
     public void makeDelay() {
