@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#848cb7</color>
-    <color name="colorPrimaryDark">#6d749f</color>
+    <color name="colorPrimary">#30366C</color>
+    <color name="colorPrimaryDark">#FF8F96</color>
     <color name="colorRed">#ff3943</color>
     <color name="colorRedDark">#801b20</color>
     <color name="colorGreenLight">#abffc0</color>
@@ -9,6 +9,6 @@
     <color name="colorGreen1">#8fd29e</color>
     <color name="colorWhite">#ffffff</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="colorPurple">#000064</color>
-    <color name="colorPurpleFaded">#90000064</color>
+    <color name="colorPurple">#3D5AFE</color>
+    <color name="colorPurpleFaded">#FF8F96</color>
 </resources>

@@ -49,6 +49,7 @@
                     android:layout_gravity="center"
                     android:textAlignment="center"
                     android:textSize="25sp"
+                    android:fontFamily="@font/bubblegum_sans"
                     android:textColor="@color/colorPurple"
                     android:textStyle="bold" />
 
@@ -73,6 +74,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:text="Your Score"
+                        android:fontFamily="@font/bubblegum_sans"
                         android:textColor="@color/colorPurple"
                         android:textSize="20sp" />
 
@@ -83,6 +85,7 @@
                         android:layout_marginBottom="10dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:fontFamily="@font/bubblegum_sans"
                         android:textSize="32sp"
                         android:textColor="@color/colorPurple"
                         android:textStyle="bold" />
@@ -103,6 +106,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:text="High Score"
+                        android:fontFamily="@font/bubblegum_sans"
                         android:textColor="@color/colorPurple"
                         android:textSize="20sp" />
 
@@ -114,6 +118,7 @@
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:textSize="32sp"
+                        android:fontFamily="@font/bubblegum_sans"
                         android:textColor="@color/colorPurple"
                         android:textStyle="bold" />
 
@@ -129,6 +134,7 @@
                     android:layout_marginBottom="20dp"
                     android:background="@drawable/button_round"
                     android:text="Play Again"
+                    android:fontFamily="@font/bubblegum_sans"
                     android:textColor="@color/colorWhite" />
 
             </LinearLayout>

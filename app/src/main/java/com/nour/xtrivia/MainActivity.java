@@ -22,6 +22,7 @@ import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -56,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     private Handler handler = new Handler();
     TextView scoreView, questionText, questionCount, category;
     private int score = 0;
+    private ProgressBar progressBar;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String HIGH_SCORE = "highScore";
     private String categoryName;
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
         scoreView = findViewById(R.id.score);
         questionCount = findViewById(R.id.questioncount);
         category = findViewById(R.id.category);
+        progressBar = findViewById(R.id.progress_circular);
         questionText = findViewById(R.id.questionText);
         recyclerOptions = findViewById(R.id.optionsRecycler);
         layoutManager = new LinearLayoutManager(this);
@@ -118,6 +121,7 @@ public class MainActivity extends AppCompatActivity implements OptionsRecyclerAd
     }
 
     public void populateViews() {
+        progressBar.setVisibility(View.GONE);
         List<String> choices = processResponse(position);
         optionsRecyclerAdapter = new OptionsRecyclerAdapter(MainActivity.this, choices, data, position, this);
         recyclerOptions.setAdapter(optionsRecyclerAdapter);
