@@ -12,7 +12,9 @@ Casual trivia game for when you need to test your knowledge or...you're just bor
 
 ### Screenshots
 
-![Home Activity](/app/src/main/res/drawable/screenshots/)
-![Categories Activity](/app/src/main/res/drawable/screenshots/)
-![Main Activity](/app/src/main/res/drawable/screenshots/)
+![Home Activity](/home-shot.png)
+![Categories Activity](/category-shot.png)
+![Main Activity](/question-shot.png)
+![Game over Dialog](/gameover-shot.png)
+![Scores Screen](/scores-shot.png)
 
